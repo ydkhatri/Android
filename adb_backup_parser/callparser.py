@@ -218,7 +218,7 @@ def main():
                             print('Error, read less than 12 bytes from file, expected full Data header!')
                             break
                         data_meta = DataHeader.parse(file_data)
-                        key = f.read(data_meta.size_key).decode('utf8')
+                        key = f.read(data_meta.size_key + 1).decode('utf8')
                         if f.tell() % 4: f.seek(4 - (f.tell() % 4), 1) # Align to 4 byte boundary
                         #print ("Reading Key =", key)
                         if data_meta.size_data != 0xFFFFFFFF:
