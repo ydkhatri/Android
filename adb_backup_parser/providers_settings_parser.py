@@ -60,20 +60,26 @@ DataHeader = Struct (
 def ReadNameValuePairs(data, logs):
     pos = 0
     size = len(data)
+    items = {}
     if size < 4: return
     while pos < (size - 4):
         nv = NameValue.parse(data[pos:])
-        logs.append({nv.name : (nv.value if nv.value_len != 0xFFFFFFFF else '')})
+        items[nv.name] = (nv.value if nv.value_len != 0xFFFFFFFF else '')
         pos += nv.name_len + nv.value_len + 8
+    if items:
+        logs.append(items)
 
 def ReadNameValue2Pairs(data, logs):
     pos = 0
     size = len(data)
+    items = {}
     if size < 2: return
     while pos < (size - 4):
         nv = NameValue2.parse(data[pos:])
-        logs.append({nv.name : (nv.value if nv.value_len != 0xFFFF else '')})
+        items[nv.name] = (nv.value if nv.value_len != 0xFFFF else '')
         pos += nv.name_len + nv.value_len + 4
+    if items:
+        logs.append(items)
 
 def ReadSoftapConfig(data, logs):
     sc = SoftapConfig.parse(data)
