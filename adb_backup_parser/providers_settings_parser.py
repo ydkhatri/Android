@@ -1,7 +1,7 @@
 '''
     (c) Yogesh Khatri 2019
 
-    License: GPLv3
+    License: MIT
 
     Purpose: Read 'com.android.providers.settings.data' located at 
              <Backup.adb>/apps/com.android.providers.settings/k
