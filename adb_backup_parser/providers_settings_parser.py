@@ -160,9 +160,9 @@ def WriteJson(path, list_of_dicts, dataset_name):
     json.dump(data, out_file_json)
     out_file_json.close()
 
-def OpenFileForWriting(path):
+def OpenFileForWriting(path, mode='w'):
     try:
-        out_file = open(path, 'w')
+        out_file = open(path, mode)
         return out_file
     except OSError as ex:
         print("Error: Could not create file '{}' for writing, error was: ".format(path) + str(ex))
@@ -239,7 +239,14 @@ def main():
                             elif key == 'lock_settings': ReadNameValue2Pairs(data, lock_settings)
                             elif key == 'softap_config': ReadSoftapConfig(data, softap_config)
                             elif key == 'network_policies': pass
-                            elif key == 'wifi_new_config': ReadWifiNewConfig(data, wifi_settings)
+                            elif key == 'wifi_new_config': 
+                                ReadWifiNewConfig(data, wifi_settings)
+                                xml_path = os.path.join(output_path, 'wifi_new_config.xml')
+                                print('Exporting embedded XML file as is to {}'.format(xml_path))
+                                xml_file = OpenFileForWriting(xml_path, 'wb')
+                                if xml_file:
+                                    xml_file.write(data)
+                                    xml_file.close()
                         
                         if f.tell() % 4: f.seek(4 - (f.tell() % 4), 1) # Align to 4 byte boundary
                         # Read next header
